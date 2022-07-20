@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.lethanh98.demo.query.grpc";
+option objc_class_prefix = "HLW";
+
+package com.lethanh98.query;
+
+// The greeting service definition.
+service UserService {
+  // Sends a greeting
+  rpc GetNameUser (GetNameUserRequest) returns (GetNameUserResponse) {
+  }
+}
+
+// The request message containing the user's name.
+message GetNameUserRequest {
+  string id = 1;
+}
+
+// The response message containing the greetings
+message GetNameUserResponse {
+  string name = 1;
+}
