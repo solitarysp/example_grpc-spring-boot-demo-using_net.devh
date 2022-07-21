@@ -1,6 +1,7 @@
 package com.lethanh98.demo;
 
 import com.lethanh98.demo.query.grpc.UserServiceGrpc;
+import grpcNotUseProtoBuff.StudentService.StudentServiceBlockingStub;
 import io.grpc.ManagedChannel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,5 +21,9 @@ public class ServiceGrpcConfig {
   @Bean
   public UserServiceGrpc.UserServiceBlockingStub userServiceBlockingStub() {
     return UserServiceGrpc.newBlockingStub(managedChannel);
+  }
+  @Bean
+  public StudentServiceBlockingStub studentServiceBlockingStub() {
+    return new StudentServiceBlockingStub(managedChannel);
   }
 }
