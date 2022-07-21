@@ -1,0 +1,12 @@
+FROM adoptopenjdk/openjdk8:ubi
+
+WORKDIR /
+
+# tạo folder
+RUN mkdir -p /data/projects/app
+RUN mkdir -p /data/projects/app/file
+
+# coppy file tại thư mục chạy cậu lệnh, đến thư mục với tên file trong image
+COPY target/client-1.0-SNAPSHOT.jar /data/projects/app/app.jar
+# start
+CMD ["java","-jar", "/data/projects/app/app.jar"]

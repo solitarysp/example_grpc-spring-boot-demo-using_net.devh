@@ -32,6 +32,7 @@
     <protoc.gen.grpc.java.version>1.1.2</protoc.gen.grpc.java.version>
     <docker.maven.plugin>0.4.13</docker.maven.plugin>
     <spring.boot.maven.plugin.version>1.5.1.RELEASE</spring.boot.maven.plugin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
@@ -44,30 +45,4 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
   </dependencies>
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <target>${java.version}</target>
-            <source>${java.version}</source>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <version>${spring.boot.maven.plugin.version}</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>repackage</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
 </project>

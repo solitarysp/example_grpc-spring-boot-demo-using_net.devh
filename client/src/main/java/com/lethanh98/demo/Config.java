@@ -11,7 +11,7 @@ public class Config {
   @Bean
   public ManagedChannel grpcChannelConfig() {
     ManagedChannel channel = ManagedChannelBuilder
-        .forAddress("127.0.0.1", 8081)
+        .forAddress("server", 8081)
         .usePlaintext()
         .build();
     return channel;
