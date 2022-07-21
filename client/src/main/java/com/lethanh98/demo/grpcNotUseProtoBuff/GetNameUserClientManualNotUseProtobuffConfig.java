@@ -12,9 +12,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class GetNameUserClientManualNotUseProtobuffConfig {
 
-  @Autowired
-  StudentServiceBlockingStub studentServiceBlockingStub;
+  final StudentServiceBlockingStub studentServiceBlockingStub;
   public static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+  public GetNameUserClientManualNotUseProtobuffConfig(
+      StudentServiceBlockingStub studentServiceBlockingStub) {
+    this.studentServiceBlockingStub = studentServiceBlockingStub;
+  }
 
 
   @Autowired
