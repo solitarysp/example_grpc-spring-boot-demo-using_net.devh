@@ -12,7 +12,7 @@ public class StudentGrpcService extends StudentServiceImplBase {
   @Override
   public void create(CreateStudentRequest request,
       StreamObserver<CreateStudentResponse> responseObserver) {
-    responseObserver.onNext(new CreateStudentResponse("ok"));
+    responseObserver.onNext(new CreateStudentResponse(request.getName()));
     responseObserver.onCompleted();
   }
 }
