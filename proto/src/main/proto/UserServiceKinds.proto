@@ -10,6 +10,7 @@ service UserServiceKinds {
   rpc GetNameUserUnary (GetNameUserUnaryRequest) returns (GetNameUserUnaryResponse);
   rpc GetNameUserServerStreaming (GetNameUserServerStreamingRequest) returns (stream GetNameUserServerStreamingResponse);
   rpc GetNameUserClientStreaming (stream GetNameUserClientStreamingRequest) returns (GetNameUserClientStreamingResponse);
+  rpc GetNameUserBidirectionalStreaming (stream GetNameUserBidirectionalStreamingRequest) returns (stream GetNameUserBidirectionalStreamingResponse);
 }
 
 message GetNameUserUnaryRequest {
@@ -35,8 +36,18 @@ message GetNameUserClientStreamingRequest {
 
 message GetNameUserClientStreamingResponse {
   repeated UserMsg users = 1;
+  message UserMsg {
+    string id = 1;
+    string name = 2;
+  }
 }
-message UserMsg {
-  string id = 1;
+
+message GetNameUserBidirectionalStreamingRequest {
+  string numberRequest = 1;
   string name = 2;
+}
+message GetNameUserBidirectionalStreamingResponse {
+  string numberRequest = 1;
+  string id = 2;
+  string name = 3;
 }

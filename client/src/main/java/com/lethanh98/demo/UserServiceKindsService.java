@@ -1,5 +1,7 @@
 package com.lethanh98.demo;
 
+import com.lethanh98.demo.query.grpc.GetNameUserBidirectionalStreamingRequest;
+import com.lethanh98.demo.query.grpc.GetNameUserBidirectionalStreamingResponse;
 import com.lethanh98.demo.query.grpc.GetNameUserClientStreamingRequest;
 import com.lethanh98.demo.query.grpc.GetNameUserClientStreamingResponse;
 import com.lethanh98.demo.query.grpc.GetNameUserServerStreamingRequest;
@@ -93,6 +95,46 @@ public class UserServiceKindsService {
             );
           }
           System.out.println("getNameUserClientStreaming client send request Done");
+          getNameUserClientStreamingRequest.onCompleted();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    };
+    scheduler.schedule(run, 5, TimeUnit.SECONDS);
+  }
+
+  // Stream dữ liệu gửi lên từ client và stream data trả về từ server.
+  // Client có thể gửi nhiều lần request và server cũng sẽ trả về nhiều response
+  // 1 request có thể trả về nhiều response hoặc không trả về
+  @Autowired
+  public void getNameUserBidirectionalStreaming() {
+    var run = new Runnable() {
+      @Override
+      public void run() {
+        try {
+          var getNameUserClientStreamingRequest = userServiceKindsStub.getNameUserBidirectionalStreaming(
+              new StreamObserver<GetNameUserBidirectionalStreamingResponse>() {
+                @Override
+                public void onNext(GetNameUserBidirectionalStreamingResponse value) {
+                  System.out.println(
+                      "Kinds getNameUserBidirectionalStreaming response: " + value);
+                }
+                @Override
+                public void onError(Throwable t) {}
+                @Override
+                public void onCompleted() { }
+              }
+          );
+          for (int i = 1; i <= 2; i++) {
+            getNameUserClientStreamingRequest.onNext(
+                GetNameUserBidirectionalStreamingRequest.newBuilder()
+                    .setName("thanh")
+                    .setNumberRequest(String.valueOf(i))
+                    .build()
+            );
+          }
+          System.out.println("getNameUserBidirectionalStreaming client send request Done");
           getNameUserClientStreamingRequest.onCompleted();
         } catch (Exception e) {
           e.printStackTrace();
