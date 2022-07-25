@@ -26,72 +26,80 @@ public class UserServiceKindsService {
 
   @Autowired
   public void getNameUserUnary() {
-    scheduler.schedule(() -> {
-      try {
-        var request = GetNameUserUnaryRequest.newBuilder()
-            .setId("1")
-            .build();
-        var getNameUserResponse = userServiceKindsBlockingStub.getNameUserUnary(request);
-        System.out.println("Kinds getNameUserUnary: " + getNameUserResponse.getName());
-      } catch (Exception e) {
-        e.printStackTrace();
+    var run = new Runnable() {
+      @Override
+      public void run() {
+        try {
+          var request = GetNameUserUnaryRequest.newBuilder()
+              .setId("1")
+              .build();
+          var getNameUserResponse = userServiceKindsBlockingStub.getNameUserUnary(request);
+          System.out.println("Kinds getNameUserUnary: " + getNameUserResponse.getName());
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
-    }, 5, TimeUnit.SECONDS);
+    };
+    scheduler.schedule(run, 5, TimeUnit.SECONDS);
   }
 
   @Autowired
   public void getNameUserServerStreaming() {
-    scheduler.schedule(() -> {
-      try {
-        var request = GetNameUserServerStreamingRequest.newBuilder()
-            .setName("thanh")
-            .build();
-        var getNameUserResponse = userServiceKindsBlockingStub.getNameUserServerStreaming(request);
-        getNameUserResponse.forEachRemaining(response -> {
-          System.out.println("Kinds getNameUserServerStreaming: " + response.getId() + " Name:"
-              + response.getName());
-        });
-      } catch (Exception e) {
-        e.printStackTrace();
+    var run = new Runnable() {
+      @Override
+      public void run() {
+        try {
+          var request = GetNameUserServerStreamingRequest.newBuilder()
+              .setName("thanh")
+              .build();
+          var getNameUserResponse = userServiceKindsBlockingStub.getNameUserServerStreaming(
+              request);
+          getNameUserResponse.forEachRemaining(response -> {
+            System.out.println("Kinds getNameUserServerStreaming: " + response.getId() + " Name:"
+                + response.getName());
+          });
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
-    }, 5, TimeUnit.SECONDS);
+    };
+    scheduler.schedule(run, 5, TimeUnit.SECONDS);
   }
 
   @Autowired
   public void getNameUserClientStreaming() {
-    scheduler.schedule(() -> {
-      try {
-
-        var getNameUserClientStreamingRequest = userServiceKindsStub.getNameUserClientStreaming(
-            new StreamObserver<GetNameUserClientStreamingResponse>() {
-              @Override
-              public void onNext(GetNameUserClientStreamingResponse value) {
-                System.out.println(
-                    "Kinds getNameUserClientStreaming response: " + value.getUsersList());
+    var run = new Runnable() {
+      @Override
+      public void run() {
+        try {
+          var getNameUserClientStreamingRequest = userServiceKindsStub.getNameUserClientStreaming(
+              new StreamObserver<GetNameUserClientStreamingResponse>() {
+                @Override
+                public void onNext(GetNameUserClientStreamingResponse value) {
+                  System.out.println(
+                      "Kinds getNameUserClientStreaming response: " + value.getUsersList());
+                }
+                @Override
+                public void onError(Throwable t) {}
+                @Override
+                public void onCompleted() { }
               }
-
-              @Override
-              public void onError(Throwable t) {
-              }
-
-              @Override
-              public void onCompleted() {
-
-              }
-            }
-        );
-        for (int i = 0; i <= 4; i++) {
-          getNameUserClientStreamingRequest.onNext(
-              GetNameUserClientStreamingRequest.newBuilder()
-                  .setId(String.valueOf(i))
-                  .build()
           );
+          for (int i = 0; i <= 4; i++) {
+            getNameUserClientStreamingRequest.onNext(
+                GetNameUserClientStreamingRequest.newBuilder()
+                    .setId(String.valueOf(i))
+                    .build()
+            );
+          }
+          System.out.println("getNameUserClientStreaming client send request Done");
+          getNameUserClientStreamingRequest.onCompleted();
+        } catch (Exception e) {
+          e.printStackTrace();
         }
-        System.out.println("getNameUserClientStreaming client send request Done");
-        getNameUserClientStreamingRequest.onCompleted();
-      } catch (Exception e) {
-        e.printStackTrace();
       }
-    }, 5, TimeUnit.SECONDS);
+    }
+        ;
+    scheduler.schedule(run, 5, TimeUnit.SECONDS);
   }
 }
